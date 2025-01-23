@@ -22,9 +22,25 @@ export class UsersService {
     return { name, age };
   }
 
-  async update(id: number, name: string, age: number) {
-    const sql = 'UPDATE users SET name = ?, age = ? WHERE id = ?';
-    await this.databaseService.run(sql, [name, age, id]);
+  async update(id: number, name?: string, age?: number) {
+    let sql = 'UPDATE users SET ';
+    const params = [];
+
+    if (name !== undefined) {
+      sql += 'name = ?';
+      params.push(name);
+    }
+
+    if (age !== undefined) {
+      if (name !== undefined) sql += ', ';
+      sql += 'age = ?';
+      params.push(age);
+    }
+
+    sql += ' WHERE id = ?';
+    params.push(id);
+
+    await this.databaseService.run(sql, params);
     return { id, name, age };
   }
 

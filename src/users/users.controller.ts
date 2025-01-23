@@ -9,6 +9,8 @@ import {
   Body,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -25,16 +27,13 @@ export class UsersController {
   }
 
   @Post()
-  async create(@Body() body: { name: string; age: number }) {
-    return this.usersService.create(body.name, body.age);
+  async create(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.create(createUserDto.name, createUserDto.age);
   }
 
   @Put(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() body: { name: string; age: number },
-  ) {
-    return this.usersService.update(+id, body.name, body.age);
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.update(+id, updateUserDto.name, updateUserDto.age);
   }
 
   @Delete(':id')
